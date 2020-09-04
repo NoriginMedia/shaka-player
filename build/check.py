@@ -88,23 +88,6 @@ def check_js_lint(args):
   return linter.lint(fix=args.fix, force=args.force)
 
 
-@_Check('css_lint')
-def check_css_lint(args):
-  """Runs the CSS linter."""
-  logging.info('Linting CSS...')
-
-  match = re.compile(r'.*\.(less|css)$')
-  base = shakaBuildHelpers.get_source_base()
-  def get(*path_components):
-    return shakaBuildHelpers.get_all_files(
-        os.path.join(base, *path_components), match)
-  files = (get('ui') + get('demo'));
-  config_path = os.path.join(base, '.csslintrc')
-
-  linter = compiler.CssLinter(files, config_path)
-  return linter.lint(fix=args.fix, force=args.force)
-
-
 @_Check('html_lint')
 def check_html_lint(args):
   """Runs the HTML linter."""
