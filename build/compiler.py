@@ -365,7 +365,7 @@ class CssLinter(object):
         # means that if we run the build scripts from inside the installed node
         # modules of shaka-player, all our sources will be filtered out if we
         # don't disable the default ignores in stylelint.
-        '--disable-default-ignores',
+        #'--disable-default-ignores',
     ] + self.source_files
 
     if fix:
