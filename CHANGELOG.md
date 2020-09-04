@@ -1,3 +1,8 @@
+## 3.0.5 (2020-09-04)
+
+Bugfixes:
+  - fix interval float precision when evicting buffer
+
 ## 3.0.4 (2020-08-25)
 
 Bugfixes:
