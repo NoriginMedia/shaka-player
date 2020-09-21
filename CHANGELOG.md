@@ -1,3 +1,8 @@
+## 3.0.6 (2020-09-21)
+
+Bugfixes:
+  - fix min eviction overflow
+
 ## 3.0.5 (2020-09-04)
 
 Bugfixes:
