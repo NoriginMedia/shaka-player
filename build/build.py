@@ -99,7 +99,7 @@ debug_closure_defines = [
 ]
 
 release_closure_opts = [
-    '-O', 'ADVANCED',
+    '-O', 'SIMPLE',
 ]
 release_closure_defines = [
     '-D', 'goog.DEBUG=false',
