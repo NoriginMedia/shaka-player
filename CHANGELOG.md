@@ -1,3 +1,8 @@
+## 3.0.7 (2020-10-01)
+
+Bugfixes:
+  - fix memory leak in timeline segments
+
 ## 3.0.6 (2020-09-21)
 
 Bugfixes:
