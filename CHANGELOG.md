@@ -1,3 +1,8 @@
+## 3.1.0 (2021-01-19)
+
+Bugfixes:
+  - Fix codec issues on 4k content
+
 ## 3.0.7 (2021-01-06)
 
 Bugfixes:
