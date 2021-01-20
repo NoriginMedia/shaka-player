@@ -4,6 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+goog.require('shaka.test.Util');
+goog.require('shaka.text.Cue');
+goog.require('shaka.text.CueRegion');
+goog.require('shaka.text.TtmlTextParser');
+goog.require('shaka.util.BufferUtils');
+goog.require('shaka.util.Error');
+goog.require('shaka.util.StringUtils');
+
 describe('TtmlTextParser', () => {
   const Cue = shaka.text.Cue;
   const CueRegion = shaka.text.CueRegion;
@@ -776,13 +784,9 @@ describe('TtmlTextParser', () => {
         '<smpte:image imagetype="PNG" encoding="Base64" xml:id="img_0">' +
         'base64EncodedImage</smpte:image>' +
         '</metadata>' +
-        '<body>' +
-        '<div>' +
-        '<p begin="01:02.05" end="01:02:03.200" ' +
-        'smpte:backgroundImage="#img_0" />' +
-        '</div>' +
-        '</body>' +
-        '</tt>',
+        '<body><div smpte:backgroundImage="#img_0">' +
+        '<p begin="01:02.05" end="01:02:03.200"></p>' +
+        '</div></body></tt>',
         {periodStart: 0, segmentStart: 0, segmentEnd: 0});
   });
 
