@@ -35,6 +35,48 @@ shaka.text = {};
 shaka.util = {};
 
 /**
+ * @summary A set of BufferSource utility functions.
+ */
+shaka.util.BufferUtils = class {
+  /**
+   * Compare two buffers for equality.  For buffers of different types, this
+   * compares the underlying buffers as binary data.
+   * @param {?BufferSource} arr1
+   * @param {?BufferSource} arr2
+   * @return {boolean}
+   */
+  static equal(arr1, arr2) {}
+  /**
+   * Gets an ArrayBuffer that contains the data from the given TypedArray.  Note
+   * this will allocate a new ArrayBuffer if the object is a partial view of
+   * the data.
+   * @param {!BufferSource} view
+   * @return {!ArrayBuffer}
+   */
+  static toArrayBuffer(view) {}
+  /**
+   * Creates a new Uint8Array view on the same buffer.  This clamps the values
+   * to be within the same view (i.e. you can't use this to move past the end
+   * of the view, even if the underlying buffer is larger).  However, you can
+   * pass a negative offset to access the data before the view.
+   * @param {BufferSource} data
+   * @param {number=} offset The offset from the beginning of this data's view
+   *   to start the new view at.
+   * @param {number=} length The byte length of the new view.
+   * @return {!Uint8Array}
+   */
+  static toUint8(data, offset, length) {}
+  /**
+   * Creates a DataView over the given buffer.
+   * @see toUint8
+   * @param {BufferSource} buffer
+   * @param {number=} offset
+   * @param {number=} length
+   * @return {!DataView}
+   */
+  static toDataView(buffer, offset, length) {}
+};
+/**
  * @summary
  * Describes an error that happened.
  * @description
@@ -226,6 +268,121 @@ shaka.util.Error.Code = {
   'CURRENT_DAI_REQUEST_NOT_FINISHED': 10004
 };
 /**
+ * An interface to standardize how objects are destroyed.
+ * @interface
+ */
+shaka.util.IDestroyable = class {
+  /**
+   * Request that this object be destroyed, releasing all resources and shutting
+   * down all operations. Returns a Promise which is resolved when destruction
+   * is complete. This Promise should never be rejected.
+   * @return {!Promise}
+   */
+  destroy() {}
+};
+/**
+ * @namespace shaka.util.StringUtils
+ * @summary A set of string utility functions.
+ */
+shaka.util.StringUtils = class {
+  /**
+   * Creates a string from the given buffer as UTF-8 encoding.
+   * @param {?BufferSource} data
+   * @return {string}
+   */
+  static fromUTF8(data) {}
+  /**
+   * Creates a string from the given buffer as UTF-16 encoding.
+   * @param {?BufferSource} data
+   * @param {boolean} littleEndian
+         true to read little endian, false to read big.
+   * @param {boolean=} noThrow true to avoid throwing in cases where we may
+   *     expect invalid input.  If noThrow is true and the data has an odd
+   *     length,it will be truncated.
+   * @return {string}
+   */
+  static fromUTF16(data, littleEndian, noThrow) {}
+  /**
+   * Creates a string from the given buffer, auto-detecting the encoding that is
+   * being used.  If it cannot detect the encoding, it will throw an exception.
+   * @param {?BufferSource} data
+   * @return {string}
+   */
+  static fromBytesAutoDetect(data) {}
+  /**
+   * Creates a ArrayBuffer from the given string, converting to UTF-8 encoding.
+   * @param {string} str
+   * @return {!ArrayBuffer}
+   */
+  static toUTF8(str) {}
+  /**
+   * Creates a ArrayBuffer from the given string, converting to UTF-16 encoding.
+   * @param {string} str
+   * @param {boolean} littleEndian
+   * @return {!ArrayBuffer}
+   */
+  static toUTF16(str, littleEndian) {}
+  /**
+   * Resets the fromCharCode method's implementation.
+   * For debug use.
+   */
+  static resetFromCharCode() {}
+};
+/**
+ * @summary A set of Uint8Array utility functions.
+ */
+shaka.util.Uint8ArrayUtils = class {
+  /**
+   * Compare two Uint8Arrays for equality.
+   * @param {Uint8Array} arr1
+   * @param {Uint8Array} arr2
+   * @return {boolean}
+   * @deprecated
+   */
+  static equal(arr1, arr2) {}
+  /**
+   * Convert a buffer to a base64 string. The output will be standard
+   * alphabet as opposed to base64url safe alphabet.
+   * @param {BufferSource} data
+   * @return {string}
+   */
+  static toStandardBase64(data) {}
+  /**
+   * Convert a buffer to a base64 string.  The output will always use the
+   * alternate encoding/alphabet also known as "base64url".
+   * @param {BufferSource} data
+   * @param {boolean=} padding If true, pad the output with equals signs.
+   *   Defaults to true.
+   * @return {string}
+   */
+  static toBase64(data, padding) {}
+  /**
+   * Convert a base64 string to a Uint8Array.  Accepts either the standard
+   * alphabet or the alternate "base64url" alphabet.
+   * @param {string} str
+   * @return {!Uint8Array}
+   */
+  static fromBase64(str) {}
+  /**
+   * Convert a hex string to a Uint8Array.
+   * @param {string} str
+   * @return {!Uint8Array}
+   */
+  static fromHex(str) {}
+  /**
+   * Convert a buffer to a hex string.
+   * @param {BufferSource} data
+   * @return {string}
+   */
+  static toHex(data) {}
+  /**
+   * Concatenate buffers.
+   * @param {...BufferSource} varArgs
+   * @return {!Uint8Array}
+   */
+  static concat(...varArgs) {}
+};
+/**
  * A timer allows a single function to be executed at a later time or at
  * regular intervals.
  * @final
@@ -349,46 +506,16 @@ shaka.util.AbortableOperation = class {
  */
 shaka.util.AbortableOperation.prototype.promise;
 /**
- * @summary A set of BufferSource utility functions.
+ * @summary Create an Event work-alike object based on the provided dictionary.
+ * The event should contain all of the same properties from the dict.
+ * @extends {Event}
  */
-shaka.util.BufferUtils = class {
+shaka.util.FakeEvent = class {
   /**
-   * Compare two buffers for equality.  For buffers of different types, this
-   * compares the underlying buffers as binary data.
-   * @param {?BufferSource} arr1
-   * @param {?BufferSource} arr2
-   * @return {boolean}
+   * @param {string} type
+   * @param {Object=} dict
    */
-  static equal(arr1, arr2) {}
-  /**
-   * Gets an ArrayBuffer that contains the data from the given TypedArray.  Note
-   * this will allocate a new ArrayBuffer if the object is a partial view of
-   * the data.
-   * @param {!BufferSource} view
-   * @return {!ArrayBuffer}
-   */
-  static toArrayBuffer(view) {}
-  /**
-   * Creates a new Uint8Array view on the same buffer.  This clamps the values
-   * to be within the same view (i.e. you can't use this to move past the end
-   * of the view, even if the underlying buffer is larger).  However, you can
-   * pass a negative offset to access the data before the view.
-   * @param {BufferSource} data
-   * @param {number=} offset The offset from the beginning of this data's view
-   *   to start the new view at.
-   * @param {number=} length The byte length of the new view.
-   * @return {!Uint8Array}
-   */
-  static toUint8(data, offset, length) {}
-  /**
-   * Creates a DataView over the given buffer.
-   * @see toUint8
-   * @param {BufferSource} buffer
-   * @param {number=} offset
-   * @param {number=} length
-   * @return {!DataView}
-   */
-  static toDataView(buffer, offset, length) {}
+  constructor(type, dict) {}
 };
 /**
  * @summary A work-alike for EventTarget.  Only DOM elements may be true
@@ -430,19 +557,6 @@ shaka.util.FakeEventTarget = class {
  * @typedef {EventListener|function(!Event):*}
  */
 shaka.util.FakeEventTarget.ListenerType;
-/**
- * An interface to standardize how objects are destroyed.
- * @interface
- */
-shaka.util.IDestroyable = class {
-  /**
-   * Request that this object be destroyed, releasing all resources and shutting
-   * down all operations. Returns a Promise which is resolved when destruction
-   * is complete. This Promise should never be rejected.
-   * @return {!Promise}
-   */
-  destroy() {}
-};
 /**
  * NetworkingEngine wraps all networking operations.  This accepts plugins that
  * handle the actual request.  A plugin is registered using registerScheme.
@@ -652,54 +766,6 @@ shaka.util.EventManager = class {
  */
 shaka.util.EventManager.ListenerType;
 /**
- * @namespace shaka.util.StringUtils
- * @summary A set of string utility functions.
- */
-shaka.util.StringUtils = class {
-  /**
-   * Creates a string from the given buffer as UTF-8 encoding.
-   * @param {?BufferSource} data
-   * @return {string}
-   */
-  static fromUTF8(data) {}
-  /**
-   * Creates a string from the given buffer as UTF-16 encoding.
-   * @param {?BufferSource} data
-   * @param {boolean} littleEndian
-         true to read little endian, false to read big.
-   * @param {boolean=} noThrow true to avoid throwing in cases where we may
-   *     expect invalid input.  If noThrow is true and the data has an odd
-   *     length,it will be truncated.
-   * @return {string}
-   */
-  static fromUTF16(data, littleEndian, noThrow) {}
-  /**
-   * Creates a string from the given buffer, auto-detecting the encoding that is
-   * being used.  If it cannot detect the encoding, it will throw an exception.
-   * @param {?BufferSource} data
-   * @return {string}
-   */
-  static fromBytesAutoDetect(data) {}
-  /**
-   * Creates a ArrayBuffer from the given string, converting to UTF-8 encoding.
-   * @param {string} str
-   * @return {!ArrayBuffer}
-   */
-  static toUTF8(str) {}
-  /**
-   * Creates a ArrayBuffer from the given string, converting to UTF-16 encoding.
-   * @param {string} str
-   * @param {boolean} littleEndian
-   * @return {!ArrayBuffer}
-   */
-  static toUTF16(str, littleEndian) {}
-  /**
-   * Resets the fromCharCode method's implementation.
-   * For debug use.
-   */
-  static resetFromCharCode() {}
-};
-/**
  * @summary A set of FairPlay utility functions.
  */
 shaka.util.FairPlayUtils = class {
@@ -727,60 +793,6 @@ shaka.util.FairPlayUtils = class {
    * @return {!Uint8Array}
    */
   static initDataTransform(initData, contentId, cert) {}
-};
-/**
- * @summary A set of Uint8Array utility functions.
- */
-shaka.util.Uint8ArrayUtils = class {
-  /**
-   * Compare two Uint8Arrays for equality.
-   * @param {Uint8Array} arr1
-   * @param {Uint8Array} arr2
-   * @return {boolean}
-   * @deprecated
-   */
-  static equal(arr1, arr2) {}
-  /**
-   * Convert a buffer to a base64 string. The output will be standard
-   * alphabet as opposed to base64url safe alphabet.
-   * @param {BufferSource} data
-   * @return {string}
-   */
-  static toStandardBase64(data) {}
-  /**
-   * Convert a buffer to a base64 string.  The output will always use the
-   * alternate encoding/alphabet also known as "base64url".
-   * @param {BufferSource} data
-   * @param {boolean=} padding If true, pad the output with equals signs.
-   *   Defaults to true.
-   * @return {string}
-   */
-  static toBase64(data, padding) {}
-  /**
-   * Convert a base64 string to a Uint8Array.  Accepts either the standard
-   * alphabet or the alternate "base64url" alphabet.
-   * @param {string} str
-   * @return {!Uint8Array}
-   */
-  static fromBase64(str) {}
-  /**
-   * Convert a hex string to a Uint8Array.
-   * @param {string} str
-   * @return {!Uint8Array}
-   */
-  static fromHex(str) {}
-  /**
-   * Convert a buffer to a hex string.
-   * @param {BufferSource} data
-   * @return {string}
-   */
-  static toHex(data) {}
-  /**
-   * Concatenate buffers.
-   * @param {...BufferSource} varArgs
-   * @return {!Uint8Array}
-   */
-  static concat(...varArgs) {}
 };
 /**
  * @implements {shaka.extern.Cue}
@@ -1452,6 +1464,13 @@ shaka.media.SegmentIndex = class {
    */
   release() {}
   /**
+   * Marks the index as immutable.  Segments cannot be added or removed after
+   * this point.  This doesn't affect the references themselves.  This also
+   * makes the destroy/release methods do nothing.
+   * This is mainly for testing.
+   */
+  markImmutable() {}
+  /**
    * Finds the position of the segment for the given time, in seconds, relative
    * to the start of the presentation.  Returns the position of the segment
    * with the largest end time if more than one segment is known for the given
@@ -1508,6 +1527,14 @@ shaka.media.SegmentIndex = class {
    */
   updateEvery(interval, updateCallback) {}
   /**
+   * Returns a new iterator that initially points to the segment that contains
+   * the given time.  Like the normal iterator, next() must be called first to
+   * get to the first element.
+   * @param {number} time
+   * @return {!shaka.media.SegmentIterator}
+   */
+  getIteratorForTime(time) {}
+  /**
    * Create a SegmentIndex for a single segment of the given start time and
    * duration at the given URIs.
    * @param {number} startTime
@@ -1522,8 +1549,11 @@ shaka.media.SegmentIndex = class {
  * @implements {Iterator.<shaka.media.SegmentReference>}
  */
 shaka.media.SegmentIterator = class {
-  /** @param {shaka.media.SegmentIndex} segmentIndex */
-  constructor(segmentIndex) {}
+  /**
+   * @param {shaka.media.SegmentIndex} segmentIndex
+   * @param {number} index
+   */
+  constructor(segmentIndex, index) {}
   /**
    * Move the iterator to a given timestamp in the underlying SegmentIndex.
    * @param {number} time
