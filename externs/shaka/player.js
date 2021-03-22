@@ -539,7 +539,8 @@ shaka.extern.AdvancedDrmConfiguration;
  *         undefined),
  *   logLicenseExchange: boolean,
  *   updateExpirationTime: number,
- *   applyDolbyAudioFix: boolean
+ *   applyDolbyAudioFix: boolean,
+ *   checkDrmExpirationStatus: boolean
  * }}
  *
  * @property {shaka.extern.RetryParameters} retryParameters
@@ -577,9 +578,12 @@ shaka.extern.AdvancedDrmConfiguration;
  * @property {number} updateExpirationTime
  *   <i>Defaults to 1.</i> <br>
  *   The frequency in seconds with which to check the expiration of a session.
- * @property {boolean} applyDolbyFix
+ * @property {boolean} applyDolbyAudioFix
  *   <i>Defaults to true.</i> <br>
  *   This is to apply dolby digital audio fix on Tizen.
+ * @property {boolean} checkDrmExpirationStatus
+ *   <i>Defaults to true.</i> <br>
+ *   If set to false, it will ignore the drm expiration check
  *
  * @exportDoc
  */
