@@ -3178,7 +3178,7 @@ declare namespace shaka.extern {
 }
 // Generated from /Users/sonammishra/Documents/work/shaka-player/externs/shaka/player.js
 declare namespace shaka.extern {
-  type DrmConfiguration = { advanced : { [ key: string ]: shaka.extern.AdvancedDrmConfiguration } | null , applyDolbyAudioFix : boolean , clearKeys : { [ key: string ]: string } , delayLicenseRequestUntilPlayed : boolean , initDataTransform ? : (a : Uint8Array , b : string , c : shaka.extern.DrmInfo | null ) => Uint8Array , logLicenseExchange : boolean , retryParameters : shaka.extern.RetryParameters , servers : { [ key: string ]: string } , updateExpirationTime : number } ;
+  type DrmConfiguration = { advanced : { [ key: string ]: shaka.extern.AdvancedDrmConfiguration } | null , applyDolbyAudioFix : boolean , clearKeys : { [ key: string ]: string } , delayLicenseRequestUntilPlayed : boolean , ignoreDrmExpirationStatus : boolean , initDataTransform ? : (a : Uint8Array , b : string , c : shaka.extern.DrmInfo | null ) => Uint8Array , logLicenseExchange : boolean , retryParameters : shaka.extern.RetryParameters , servers : { [ key: string ]: string } , updateExpirationTime : number } ;
 }
 // Generated from /Users/sonammishra/Documents/work/shaka-player/externs/shaka/player.js
 declare namespace shaka.extern {
