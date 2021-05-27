@@ -346,12 +346,23 @@ shaka.extern.Cue = class {
 
     /**
      * Nested cues, which should be laid out horizontally in one block.
-     * @type {Array.<!shaka.extern.Cue>}
+     * @type {!Array.<!shaka.extern.Cue>}
      * @exportDoc
      */
     this.nestedCues;
 
     /**
+     * Whether or not the cue only acts as a line break between two nested cues.
+     * Should only appear in nested cues.
+     * @type {boolean}
+     * @exportDoc
+     */
+    this.lineBreak;
+
+    /**
+     * @deprecated
+     * "spacer" is deprecated and will be removed in v4. Use "lineBreak"
+     * instead.
      * Whether or not the cue only acts as a line break between two nested cues.
      * Should only appear in nested cues.
      * @type {boolean}

@@ -1,3 +1,8 @@
+## 3.0.10-norigin.7 (2021-05-27)
+Fixed:
+- Styled nested cues are now displayed on one line where intended
+- Spacing between nested cues fixed by using 'br' in place of spans / divs
+
 ## 3.0.7-norigin.1 (2020-01-20)
 
 Changed:
