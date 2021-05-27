@@ -1099,10 +1099,6 @@ shaka.text.Cue.prototype.nestedCues;
 /**
      * @override
      */
-shaka.text.Cue.prototype.lineBreak;
-/**
-     * @override
-     */
 shaka.text.Cue.prototype.spacer;
 /**
      * @override
