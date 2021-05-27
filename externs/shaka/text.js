@@ -346,7 +346,7 @@ shaka.extern.Cue = class {
 
     /**
      * Nested cues, which should be laid out horizontally in one block.
-     * @type {Array.<!shaka.extern.Cue>}
+     * @type {!Array.<!shaka.extern.Cue>}
      * @exportDoc
      */
     this.nestedCues;
